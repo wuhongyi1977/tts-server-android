@@ -321,7 +321,7 @@ fun SettingsScreen(drawerState: DrawerState) {
                 subTitle = { Text(stringResource(id = R.string.request_timeout_summary)) },
                 value = (requestTimeout / 1000).toFloat(),
                 onValueChange = { requestTimeout = it.toInt() * 1000 },
-                valueRange = 1f..30f,
+                valueRange = 1f..180f,
                 icon = { Icon(Icons.Default.AccessTime, null) },
                 label = requestTimeoutValue
             )

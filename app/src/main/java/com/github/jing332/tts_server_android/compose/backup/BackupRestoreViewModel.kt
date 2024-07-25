@@ -67,7 +67,7 @@ class BackupRestoreViewModel(application: Application) : AndroidViewModel(applic
             appDb.systemTtsDao.insertGroupWithTts(*list.toTypedArray())
         } else if (file.name.endsWith("speechRules.json")) {
             val list: List<SpeechRule> = AppConst.jsonBuilder.decodeFromString(jsonStr)
-            appDb.speechRuleDao.insert(*list.toTypedArray())
+            appDb.speechRuleDao.insertOrUpdate(*list.toTypedArray())
         } else if (file.name.endsWith("replaceRules.json")) {
             val list: List<GroupWithReplaceRule> =
                 AppConst.jsonBuilder.decodeFromString(jsonStr)

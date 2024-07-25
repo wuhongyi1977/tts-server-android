@@ -128,4 +128,5 @@ class SpeechRuleEngine(
     }
 
     data class TextWithTag(val text: String, val tag: String, val id: Long)
+
 }

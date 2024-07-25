@@ -37,7 +37,7 @@ abstract class ITextToSpeechSynthesizer<T> {
     open fun stop() {}
     open fun destroy() {}
 
-    open suspend fun handleText(text: String): List<TtsTextSegment> = emptyList()
+    open suspend fun handleText(text: String, bound: android.os.Bundle?): List<TtsTextSegment> = emptyList()
 
     open suspend fun getAudio(
         tts: ITextToSpeechEngine,
@@ -61,6 +61,7 @@ abstract class ITextToSpeechSynthesizer<T> {
 
     suspend fun synthesizeText(
         text: String,
+        bound: android.os.Bundle?,
         sysRate: Int,
         sysPitch: Int,
         onAudioAvailable: suspend (AudioData<T>) -> Unit
@@ -68,7 +69,7 @@ abstract class ITextToSpeechSynthesizer<T> {
         val channel = Channel<AudioData<T>>(10)
         coroutineScope {
             launch(Dispatchers.IO) {
-                val textList = handleText(text)
+                val textList = handleText(text, bound)
                 textList.forEach { subTxtTts ->
                     val audioResult = getAudio(subTxtTts.tts, subTxtTts.text, sysRate, sysPitch)
                     val waitJob = launch { awaitCancellation() }.job

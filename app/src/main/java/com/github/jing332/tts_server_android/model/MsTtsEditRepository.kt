@@ -1,5 +1,6 @@
 package com.github.jing332.tts_server_android.model
 
+import android.util.Log
 import com.drake.net.utils.withDefault
 import com.drake.net.utils.withIO
 import com.github.jing332.tts_server_android.app
@@ -52,6 +53,7 @@ class MsTtsEditRepository() {
         mDataCacheMap[EDGE_CACHE_PATH]?.let { return it }
 
         val list = getVoicesHelper<EdgeVoiceBean>(EDGE_CACHE_PATH) {
+            Log.d("MsTtsEditRepository", "edgeVoices 1")
             Tts_server_lib.getEdgeVoices()
         }
 

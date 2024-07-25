@@ -37,6 +37,7 @@ sealed class ITextToSpeechEngine(
     abstract var locale: String
 
     abstract var speechRule: SpeechRuleInfo
+    abstract var displayName: String?
     abstract var audioFormat: BaseAudioFormat
     abstract var audioPlayer: PlayerParams
     abstract var audioParams: AudioParams

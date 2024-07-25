@@ -30,6 +30,8 @@ data class BgmTTS(
     override var audioParams: AudioParams = AudioParams(),
     @Transient
     override var speechRule: SpeechRuleInfo = SpeechRuleInfo(),
+    @Transient
+    override var displayName: String? = null,
 
     override var locale: String = ""
 ) : ITextToSpeechEngine() {

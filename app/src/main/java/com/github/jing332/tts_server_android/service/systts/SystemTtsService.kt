@@ -246,6 +246,7 @@ class SystemTtsService : TextToSpeechService(), TextToSpeechManager.Listener {
                 mTtsManager.textToAudio(
                     ttsId = ttsId,
                     text = text,
+                    request.params,
                     sysRate = (request.speechRate * 100) / 500, // < 100
                     sysPitch = request.pitch - 100, // 默认0,
                     onStart = { sampleRate, bitRate ->

@@ -1,9 +1,20 @@
 let SpeechRuleJS = {
-    name: "旁白/对话",
+    name: "旁白/分角色对话",
     id: "ttsrv.multi_voice",
     author: "TTS Server",
     version: 4,
-    tags: {narration: "旁白", dialogue: "对话"},
+    tags: {
+        narration: "旁白",
+        dialogue: "对话"
+    },
+    tagsData: {
+        dialogue: {
+            role: {
+                label: "匹配角色名",
+                hint: ""
+            }
+        }
+    },
 
     handleText(text) {
         const list = [];
@@ -33,20 +44,19 @@ let SpeechRuleJS = {
     splitText(text) {
         let separatorStr = "。？?！!;；"
 
-        let list = []
-        let tmpStr = ""
+        let list = [];
+        let tmpStr = "";
         text.split("").forEach((char, index) => {
-            tmpStr += char
+            tmpStr += char;
 
             if (separatorStr.includes(char)) {
-                list.push(tmpStr)
-                tmpStr = ""
+                list.push(tmpStr);
+                tmpStr = "";
             } else if (index === text.length - 1) {
                 list.push(tmpStr);
             }
-        })
+        });
 
-        return list.filter(item =>  item.replace(/[“”]/g, '').trim().length > 0);
+        return list.filter(item => item.replace(/[“”]/g, '').trim().length > 0);
     }
-
 };

@@ -37,6 +37,8 @@ data class HttpTTS(
     override var audioParams: AudioParams = AudioParams(),
     @Transient
     override var speechRule: SpeechRuleInfo = SpeechRuleInfo(),
+    @Transient
+    override var displayName: String? = null,
 
     @Transient
     override var locale: String = "",

@@ -62,6 +62,8 @@ interface ReplaceRuleDao {
 
     @Query("SELECT * FROM replaceRuleGroup WHERE id = :id")
     fun getGroup(id: Long = DEFAULT_GROUP_ID): ReplaceRuleGroup?
+    @Query("SELECT * FROM replaceRuleGroup WHERE name = :name")
+    fun getGroupByName(name: String): ReplaceRuleGroup?
 
     @Query("SELECT * FROM ReplaceRule WHERE groupId = :groupId ORDER BY `order` ASC")
     fun getListInGroup(groupId: Long = DEFAULT_GROUP_ID): List<ReplaceRule>

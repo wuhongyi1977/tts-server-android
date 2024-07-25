@@ -1,6 +1,7 @@
 package com.github.jing332.tts_server_android.model.speech.tts
 
 import android.os.Parcelable
+import android.util.Log
 import com.github.jing332.tts_server_android.App
 import com.github.jing332.tts_server_android.R
 import com.github.jing332.tts_server_android.app
@@ -40,6 +41,8 @@ data class MsTTS(
     override var audioFormat: BaseAudioFormat = MsTtsFormatManger.getFormatOrDefault(format),
     @Transient
     override var speechRule: SpeechRuleInfo = SpeechRuleInfo(),
+    @Transient
+    override var displayName: String? = null,
 ) : Parcelable, ITextToSpeechEngine() {
     companion object {
         const val RATE_FOLLOW_SYSTEM = -100
@@ -158,14 +161,14 @@ data class MsTTS(
                 volume,
                 pitch,
                 format.ifBlank { "audio-24khz-48kbitrate-mono-mp3" })
-        } else
-            ByteArrayInputStream(
-                SysTtsLib.getAudio(
-                    speakText,
-                    this.copy(prosody = prosody.copy(rate = rate, pitch = pitch)),
-                    format
-                )
+        } else {
+            val a = SysTtsLib.getAudio(
+                speakText,
+                this.copy(prosody = prosody.copy(rate = rate, pitch = pitch)),
+                format
             )
+            ByteArrayInputStream(a)
+        }
     }
 
 //    override suspend fun getAudioStream(

@@ -97,7 +97,7 @@ object SystemTtsConfig {
     val isMultiVoiceEnabled = mutableDataSaverStateOf(
         dataSaverInterface = dataSaverPref,
         key = "isMultiVoiceEnabled",
-        initialValue = false
+        initialValue = true
     )
 
     val isVoiceMultipleEnabled = mutableDataSaverStateOf(

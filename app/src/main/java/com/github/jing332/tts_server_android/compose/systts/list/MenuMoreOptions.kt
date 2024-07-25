@@ -45,6 +45,9 @@ internal fun MenuMoreOptions(
     var showImportSheet by remember { mutableStateOf(false) }
     if (showImportSheet)
         ListImportBottomSheet(onDismissRequest = { showImportSheet = false })
+    var showImportMultiTTSSheet by remember { mutableStateOf(false) }
+    if (showImportMultiTTSSheet)
+        MultiTTSListImportBottomSheet(onDismissRequest = { showImportMultiTTSSheet = false })
 
     var showInternalPlayerDialog by remember { mutableStateOf(false) }
     if (showInternalPlayerDialog)
@@ -174,5 +177,16 @@ internal fun MenuMoreOptions(
         }, leadingIcon = {
             Icon(Icons.Default.Output, null)
         })
+
+        HorizontalDivider()
+        DropdownMenuItem(text = {
+            Text("导入MiltiTTS")
+        }, onClick = {
+            onDismissRequest()
+            showImportMultiTTSSheet = true },
+            leadingIcon = {
+                Icon(Icons.Default.Input, null)
+            }
+        )
     }
 }

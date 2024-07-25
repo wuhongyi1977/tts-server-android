@@ -36,6 +36,8 @@ data class PluginTTS(
     @Transient
     override var speechRule: SpeechRuleInfo = SpeechRuleInfo(),
     @Transient
+    override var displayName: String? = null,
+    @Transient
     var plugin: Plugin? = null,
 ) : ITextToSpeechEngine() {
     init {

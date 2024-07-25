@@ -51,6 +51,8 @@ data class LocalTTS(
     override var audioParams: AudioParams = AudioParams(),
     @Transient
     override var speechRule: SpeechRuleInfo = SpeechRuleInfo(),
+    @Transient
+    override var displayName: String? = null,
 ) : Parcelable, ITextToSpeechEngine() {
     companion object {
         private const val TAG = "LocalTTS"

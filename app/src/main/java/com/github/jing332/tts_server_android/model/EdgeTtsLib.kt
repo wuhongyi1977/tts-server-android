@@ -1,5 +1,6 @@
 package com.github.jing332.tts_server_android.model
 
+import android.util.Log
 import com.github.jing332.tts_server_android.constant.MsTtsApiType
 import com.github.jing332.tts_server_android.model.speech.tts.MsTTS
 import tts_server_lib.*
@@ -48,12 +49,15 @@ object SysTtsLib {
         val libPro = toLibProperty(pro)
         when (pro.api) {
             MsTtsApiType.EDGE -> {
-                return mEdgeApi.getEdgeAudio(
+                val b = mEdgeApi.getEdgeAudio(
                     text,
                     format,
                     libPro.voiceProperty,
                     libPro.voiceProsody
                 )
+                val bs = b.size
+                Log.d("SysTtsLib", "getAudio $bs")
+                return b
             }
 
             MsTtsApiType.AZURE -> {

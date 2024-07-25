@@ -6,6 +6,7 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import com.github.jing332.tts_server_android.R
 import com.github.jing332.tts_server_android.compose.systts.list.ListImportBottomSheet
+import com.github.jing332.tts_server_android.compose.systts.list.MultiTTSListImportBottomSheet
 import com.github.jing332.tts_server_android.compose.systts.plugin.PluginImportBottomSheet
 import com.github.jing332.tts_server_android.compose.systts.plugin.PluginManagerActivity
 import com.github.jing332.tts_server_android.compose.systts.replace.ReplaceRuleImportBottomSheet
@@ -13,6 +14,7 @@ import com.github.jing332.tts_server_android.compose.systts.speechrule.SpeechRul
 import com.github.jing332.tts_server_android.compose.systts.speechrule.SpeechRuleManagerActivity
 
 enum class ImportType(val id: String, @StringRes val strResId: Int) {
+    MultiTTSLIST("MultiTTSlist", 0),
     LIST("list", R.string.config_list),
     PLUGIN("plugin", R.string.plugin),
     REPLACE_RULE("replaceRule", R.string.replace_rule),
@@ -24,6 +26,9 @@ object ImportConfigFactory {
         return when (ImportType.values().find { it.id == type }) {
             ImportType.LIST -> {
                 { ListImportBottomSheet(it) }
+            }
+            ImportType.MultiTTSLIST -> {
+                { MultiTTSListImportBottomSheet(it) }
             }
 
             ImportType.PLUGIN -> {

@@ -9,6 +9,8 @@ import (
 	"io"
 	"net/http"
 	"time"
+     "log"
+	"sync"
 )
 
 func init() {
@@ -27,7 +29,7 @@ func (v *VoiceProperty) Proto(prosody *VoiceProsody, exp *VoiceExpressAs) *tts.V
 	v.ExpressAs = (*tts.ExpressAs)(exp)
 	return (*tts.VoiceProperty)(v)
 }
-
+var globalMu sync.Mutex
 type EdgeApi struct {
 	Timeout      int32
 	UseDnsLookup bool
@@ -36,6 +38,8 @@ type EdgeApi struct {
 
 func (e *EdgeApi) GetEdgeAudio(text, format string, property *VoiceProperty,
 	prosody *VoiceProsody) ([]byte, error) {
+log.Printf("GetEdgeAudio: %s", text)
+	globalMu.Lock()
 	if e.tts == nil {
 		e.tts = &edge.TTS{DnsLookupEnabled: e.UseDnsLookup}
 	}
@@ -61,12 +65,16 @@ func (e *EdgeApi) GetEdgeAudio(text, format string, property *VoiceProperty,
 
 	select {
 	case audio := <-succeed:
+log.Printf("Audio length: %d bytes", len(audio))
+		globalMu.Unlock()
 		return audio, nil
 	case err := <-failed:
+		globalMu.Unlock()
 		return nil, err
 	case <-time.After(time.Duration(e.Timeout) * time.Millisecond):
 		e.tts.CloseConn()
 		e.tts = nil
+		globalMu.Unlock()
 		return nil, fmt.Errorf("timed out：%dms", e.Timeout)
 	}
 }
@@ -83,3 +91,5 @@ func GetEdgeVoices() ([]byte, error) {
 	}
 	return data, nil
 }
+
+

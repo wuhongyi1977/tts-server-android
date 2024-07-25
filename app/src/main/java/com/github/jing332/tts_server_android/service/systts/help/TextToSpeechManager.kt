@@ -64,7 +64,7 @@ class TextToSpeechManager(val context: Context) : ITextToSpeechSynthesizer<IText
     private val mSpeechRuleHelper = SpeechRuleHelper()
     private val mRandom = Random(System.currentTimeMillis())
 
-    override suspend fun handleText(text: String): List<TtsTextSegment> {
+    override suspend fun handleText(text: String, bound: android.os.Bundle?): List<TtsTextSegment> {
         kotlin.runCatching {
             return if (SysTtsConfig.isMultiVoiceEnabled) {
                 val tagTtsMap = mutableMapOf<String, MutableList<ITextToSpeechEngine>>()
@@ -75,7 +75,7 @@ class TextToSpeechManager(val context: Context) : ITextToSpeechSynthesizer<IText
                     tagTtsMap[tts.speechRule.tag]?.add(tts)
                 }
 
-                mSpeechRuleHelper.handleText(text, tagTtsMap, defaultTtsConfig)
+                mSpeechRuleHelper.handleText(text, bound, tagTtsMap, defaultTtsConfig)
             } else {
                 val list = mConfigMap[SpeechTarget.ALL] ?: listOf(defaultTtsConfig)
                 listOf(TtsTextSegment(list[mRandom.nextInt(list.size)], text))
@@ -272,6 +272,7 @@ class TextToSpeechManager(val context: Context) : ITextToSpeechSynthesizer<IText
                 )
             }
             it.tts.speechRule = it.speechRule
+            it.tts.displayName = it.displayName
             it.tts.speechRule.configId = it.id
             return@map it.tts
         }
@@ -372,6 +373,7 @@ class TextToSpeechManager(val context: Context) : ITextToSpeechSynthesizer<IText
     suspend fun textToAudio(
         ttsId: Long = -1L,
         text: String,
+        bound: android.os.Bundle?,
         sysRate: Int,
         sysPitch: Int,
         onStart: (sampleRate: Int, bitRate: Int) -> Unit,
@@ -385,7 +387,7 @@ class TextToSpeechManager(val context: Context) : ITextToSpeechSynthesizer<IText
         if (ttsId == -1L) {
             mBgmPlayer?.play()
             onStart(audioFormat.sampleRate, audioFormat.bitRate)
-            synthesizeText(replaced, sysRate, sysPitch) { data -> // 音频获取完毕
+            synthesizeText(replaced, bound, sysRate, sysPitch) { data -> // 音频获取完毕
                 data.receiver(sysRate, sysPitch, audioFormat, onPcmAudio)
             }
         } else {
